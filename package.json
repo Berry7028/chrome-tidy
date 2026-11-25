@@ -1,0 +1,23 @@
+{
+  "name": "chrome-tidy",
+  "version": "0.1.0",
+  "description": "Dia-style automatic tab grouping extension for Chromium browsers",
+  "scripts": {
+    "build": "node build.mjs && node_modules/.bin/tsc",
+    "watch": "node build.mjs --watch",
+    "typecheck": "node_modules/.bin/tsc",
+    "icons": "python3 scripts/generate_icons.py",
+    "test": "node scripts/e2e-test.mjs && node scripts/e2e-second-mode.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/chrome": "^0.3.8",
+    "esbuild": "^0.28.2",
+    "playwright-core": "^1.65.1",
+    "typescript": "^7.0.2"
+  },
+  "private": true
+}

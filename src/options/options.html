@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chrome Tidy 設定</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Chrome Tidy</h1>
+        <p class="lede">Diaのように、リンクを新しいタブで開くと自動でタブグループを作ります。</p>
+      </header>
+
+      <section>
+        <h2>基本</h2>
+        <label class="row">
+          <input type="checkbox" id="enabled" />
+          <span>自動グループ化を有効にする</span>
+        </label>
+
+        <div class="field">
+          <span class="label">グループ化のタイミング</span>
+          <label class="row radio">
+            <input type="radio" name="groupingTrigger" value="first" />
+            <span>1枚目から即座に(Diaと同じ)</span>
+          </label>
+          <label class="row radio">
+            <input type="radio" name="groupingTrigger" value="second" />
+            <span>同じタブから2枚目を開いたら</span>
+          </label>
+        </div>
+
+        <label class="row">
+          <input type="checkbox" id="dissolveSingleTabGroups" />
+          <span>タブが1枚だけになったグループを自動で解除</span>
+        </label>
+      </section>
+
+      <section>
+        <h2>グループ名</h2>
+        <div class="field">
+          <span class="label">命名方式</span>
+          <label class="row radio">
+            <input type="radio" name="namingProvider" value="nano" />
+            <span>Gemini Nano(ブラウザ内蔵・オフライン)</span>
+            <span class="badge" id="nano-status"></span>
+          </label>
+          <div class="indent" id="nano-download-row" hidden>
+            <button type="button" id="nano-download" class="secondary">モデルをダウンロード</button>
+            <span class="hint">初回のみモデルのダウンロードが必要です</span>
+          </div>
+          <label class="row radio">
+            <input type="radio" name="namingProvider" value="openai" />
+            <span>OpenAI互換API</span>
+          </label>
+          <div class="indent stack" id="openai-config">
+            <label>Base URL <input type="text" id="openai-base-url" placeholder="https://api.openai.com/v1" spellcheck="false" /></label>
+            <label>APIキー <input type="password" id="openai-api-key" spellcheck="false" autocomplete="off" /></label>
+            <label>モデル <input type="text" id="openai-model" placeholder="gpt-4o-mini" spellcheck="false" /></label>
+            <div class="testrow">
+              <button type="button" class="secondary test-btn" data-provider="openai">接続テスト</button>
+              <span class="test-result" id="openai-test-result"></span>
+            </div>
+          </div>
+          <label class="row radio">
+            <input type="radio" name="namingProvider" value="anthropic" />
+            <span>Anthropic(Claude)</span>
+          </label>
+          <div class="indent stack" id="anthropic-config">
+            <label>APIキー <input type="password" id="anthropic-api-key" spellcheck="false" autocomplete="off" /></label>
+            <label>モデル <input type="text" id="anthropic-model" placeholder="claude-haiku-4-5" spellcheck="false" /></label>
+            <div class="testrow">
+              <button type="button" class="secondary test-btn" data-provider="anthropic">接続テスト</button>
+              <span class="test-result" id="anthropic-test-result"></span>
+            </div>
+          </div>
+          <label class="row radio">
+            <input type="radio" name="namingProvider" value="fallback" />
+            <span>ルールベース(AIなし)</span>
+          </label>
+        </div>
+
+        <label class="row">
+          <input type="checkbox" id="emojiPrefix" />
+          <span>グループ名に絵文字を付ける</span>
+        </label>
+        <label class="row">
+          <input type="checkbox" id="evolveNames" />
+          <span>タブ構成の変化に合わせて名前を自動更新(Diaと同じ)</span>
+        </label>
+        <p class="hint">AIが使えない環境では自動的にルールベースの命名にフォールバックします。手動でリネームしたグループは自動命名の対象から外れます。</p>
+      </section>
+
+      <section>
+        <h2>除外ドメイン</h2>
+        <p class="hint">ここに書いたドメインのページから開いたタブ、およびこれらのドメインへのタブはグループ化しません。1行に1ドメイン。</p>
+        <textarea id="blacklist" rows="4" placeholder="example.com&#10;mail.google.com" spellcheck="false"></textarea>
+      </section>
+
+      <section>
+        <h2>動作状況</h2>
+        <p id="naming-status" class="hint">まだ命名は実行されていません</p>
+        <p class="hint">タブグループが自動で作られない場合は、chrome://extensions で「デベロッパーモード」がオンか、拡張機能が有効かを確認してください。</p>
+      </section>
+
+      <footer>
+        <button type="button" id="save">保存</button>
+        <span id="save-status" role="status"></span>
+      </footer>
+    </main>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>
